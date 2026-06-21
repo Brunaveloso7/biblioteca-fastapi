@@ -1,7 +1,4 @@
-from fastapi import FastAPI
+from backend.database import engine
+from backend import models
 
-app = FastAPI()
-
-@app.get("/")
-def home():
-    return {"message": "Bem-vindo à API da Biblioteca!"}
+models.Base.metadata.create_all(bind=engine)
