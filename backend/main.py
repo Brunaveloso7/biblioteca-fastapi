@@ -1,3 +1,6 @@
+from fastapi import fastapi
+app = FastAPI()
+
 from backend.database import engine
 from backend import models
 
