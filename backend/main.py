@@ -37,3 +37,13 @@ def criar_livro(
     db.refresh(novo_livro)
 
     return novo_livro
+
+
+@app.get("/livros/{livro_id}")
+def buscar_livro(livro_id: int, db: Session = Depends(get_db)):
+    livro = db.query(models.Livro).filter(models.Livro.id == livro_id).first()
+
+    if livro is None:
+        return {"erro": "Livro não encontrado"}
+
+    return livro
