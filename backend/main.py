@@ -47,3 +47,38 @@ def buscar_livro(livro_id: int, db: Session = Depends(get_db)):
         return {"erro": "Livro não encontrado"}
 
     return livro
+
+
+@app.put("/livros/{livro_id}")
+def atualizar_livro(
+    livro_id: int,
+    livro: schema.LivroCreate,
+    db: Session = Depends(get_db)
+):
+    livro_db = db.query(models.Livro).filter(models.Livro.id == livro_id).first()
+
+    if livro_db is None:
+        return {"erro": "Livro não encontrado"}
+
+    livro_db.titulo = livro.titulo
+    livro_db.autor = livro.autor
+    livro_db.url_imagem = livro.url_imagem
+    livro_db.disponivel = livro.disponivel
+
+    db.commit()
+    db.refresh(livro_db)
+
+    return livro_db
+
+
+@app.delete("/livros/{livro_id}")
+def deletar_livro(livro_id: int, db: Session = Depends(get_db)):
+    livro = db.query(models.Livro).filter(models.Livro.id == livro_id).first()
+
+    if livro is None:
+        return {"erro": "Livro não encontrado"}
+
+    db.delete(livro)
+    db.commit()
+
+    return {"mensagem": "Livro removido com sucesso"}
