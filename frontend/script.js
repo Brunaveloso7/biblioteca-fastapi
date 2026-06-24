@@ -1,35 +1,18 @@
-const livrosEncontrados = [
-    {
-        id: 1,
-        titulo: "Naruto Gold Vol. 25",
-        autor: "Masashi Kishimoto",
-        imagem: "https://m.media-amazon.com/images/I/91yHC4nDaHL._SY466_.jpg",
-        disponivel: true
-    },
-    {
-        id: 2,
-        titulo: "Beyond The Story",
-        autor: "Myeongseok Kang",
-        imagem: "https://m.media-amazon.com/images/I/81fozPElIyL._UF1000,1000_QL80_.jpg",
-        disponivel: false
-    },
-    {
-        id: 3,
-        titulo: "O Horizonte Mora Em Um Dia Cinza",
-        autor: "Tatielle Katluryn",
-        imagem: "https://imgv2-1-f.scribdassets.com/img/word_document/720044759/original/8019ac30d4/1?v=1",
-        disponivel: true
-    },
-    {
-        id: 4,
-        titulo: "Diário de Um Banana",
-        autor: "Jeff Kinney",
-        imagem: "https://m.media-amazon.com/images/I/71fWaI5myqL.jpg",
-        disponivel: true
-    }
-];
+const API_URL = "https://redesigned-space-tribble-975pjqg4qxj9cx5jp-8000.app.github.dev";
 
 const resultadosBusca = document.getElementById("resultadosBusca");
+
+async function carregarLivros() {
+    try {
+        const resposta = await fetch(`${API_URL}/livros`);
+        const livros = await resposta.json();
+
+        exibirLivros(livros);
+    } catch (erro) {
+        console.log("Erro ao carregar livros:", erro);
+        resultadosBusca.innerHTML = "<p>Erro ao carregar livros.</p>";
+    }
+}
 
 function exibirLivros(livros) {
     resultadosBusca.innerHTML = "";
@@ -39,7 +22,8 @@ function exibirLivros(livros) {
         card.classList.add("livro");
 
         const img = document.createElement("img");
-        img.src = livro.imagem;
+        img.src = livro.url_imagem;
+        img.alt = livro.titulo;
 
         const titulo = document.createElement("h3");
         titulo.textContent = livro.titulo;
@@ -61,9 +45,23 @@ function exibirLivros(livros) {
             botao.textContent = "Receber aviso";
         }
 
-        botao.addEventListener("click", () => {
+        botao.addEventListener("click", async () => {
             if (livro.disponivel) {
-                livro.disponivel = false;
+                const livroAtualizado = {
+                    titulo: livro.titulo,
+                    autor: livro.autor,
+                    url_imagem: livro.url_imagem,
+                    disponivel: false
+                };
+
+                await fetch(`${API_URL}/livros/${livro.id}`, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(livroAtualizado)
+                });
+
                 status.textContent = "Indisponível";
                 botao.textContent = "Reservado!";
                 botao.disabled = true;
@@ -83,4 +81,4 @@ function exibirLivros(livros) {
     });
 }
 
-exibirLivros(livrosEncontrados);
+carregarLivros();
