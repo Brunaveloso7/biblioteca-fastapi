@@ -3,7 +3,7 @@ body {
     margin: 0;
     background-color: #e6dcc9;
     display: flex;
-    flex-direction: column; /* MOBILE FIRST */
+    flex-direction: column;
 }
 
 /* MENU */
@@ -53,7 +53,7 @@ body {
     border: 1px solid #999;
 }
 
-/* LISTA - MOBILE */
+/* LISTA DE LIVROS */
 .lista-livros {
     margin-top: 25px;
     display: grid;
@@ -68,20 +68,41 @@ body {
     border-radius: 20px;
     text-align: center;
     box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    min-height: 650px;
 }
 
+/* IMAGEM */
 .livro img {
     width: 100%;
+    height: 420px;
+    object-fit: cover;
     border-radius: 8px;
+}
+
+/* TÍTULO */
+.livro h3 {
+    min-height: 70px;
+    margin-top: 15px;
+}
+
+/* AUTOR */
+.livro p {
+    margin: 10px 0;
 }
 
 /* STATUS */
 .status {
     background-color: #cfe3b0;
-    padding: 6px;
+    padding: 8px;
     border-radius: 10px;
     margin: 10px auto;
     width: 140px;
+    font-weight: bold;
 }
 
 /* BOTÃO */
@@ -92,18 +113,22 @@ body {
     padding: 10px;
     border-radius: 12px;
     cursor: pointer;
-    width: 120px;
+    width: 140px;
     margin: 10px auto;
     display: block;
+    font-size: 15px;
 }
 
 .botao:hover {
     background-color: #5c7c37;
 }
 
+.botao:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+}
 
-/* estilização para TABLET  */
-
+/* TABLET */
 @media (min-width: 768px) {
 
     .topo {
@@ -121,9 +146,7 @@ body {
     }
 }
 
-
-/* estilização para COMPUTADOR  */
-
+/* COMPUTADOR */
 @media (min-width: 1024px) {
 
     body {
